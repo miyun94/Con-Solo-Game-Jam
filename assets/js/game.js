@@ -43,61 +43,72 @@ let enemyAttack = 12;
 // }
 
 //Parameter: variable placeholder in the function definition
-
 let fight = function(enemyName){
+  //repeat and execute as long as the enemy robot is alive
+  while(playerHealth > 0 && enemyHealth > 0 ){
+
     //alert player that they are starting the round
-    window.alert("Welcome to Robot Gladiators"); 
+    //window.alert("Welcome to Robot Gladiators"); 
 
     let promptFight = window.prompt("Would you like to FIGHT or SKIP this battle? Enter 'FIGHT' or 'SKIP' to choose."); 
-
-    if(promptFight === 'fight' || promptFight === "FIGHT"){
+    
+    if (promptFight === "skip" || promptFight === "SKIP") {
+        //confirm player wants to skip 
+        let confirmSkip = window.confirm("Are you sure you'd like to quit?"); 
+    
+        //if yes, leave fight
+        if (confirmSkip){
+        window.alert(playerName + ' has decided to skip this fight. Goodbye!'); 
+            //subtract money from playerMoney for skipping
+            playerMoney = playerMoney - 10; 
+            console.log("playerMoney", playerMoney); 
+            break; 
+        } 
+    }
+  
     //subtract the value of 'playerAttack' from the value of 'enemyHealth'
     enemyHealth = enemyHealth - playerAttack; 
-
     //log a resulting message to console
     console.log(playerName + " attacked " +  enemyName + ". " + enemyName + " now has " + enemyHealth + " health remaining.");
 
     //check enemy's health using a control flow statement 
     if(enemyHealth <= 0 ){
         window.alert(enemyName + " has died"); 
+        break;
     } else {
         window.alert(enemyName + " still has " + enemyHealth + " health left"); 
     }
 
     //subtract the value of 'enemyAttack; fro the value of 'playerHealth'
     playerHealth = playerHealth - enemyAttack; 
-
     //log a resulting message to the console 
     console.log(enemyName + " attacked " + playerName + ". " + playerName + " now has " + playerHealth); 
 
     //check player's health
     if (playerHealth <= 0){
         window.alert(playerName + " has died!"); 
+        break; 
+        //break allows us to exit current loop
     } else {
         window.alert(playerName + " still has " + playerHealth + " health left."); 
     }
-} else if (promptFight === "skip" || promptFight === "SKIP") {
-    //confirm player wants to skip 
-    let confirmSkip = window.confirm("Are you sure you'd like to quit?"); 
-
-    //if yes, leave fight
-    if (confirmSkip){
-        //subtract money from playerMoney for skipping
-        playerMoney = playerMoney - 2; 
-        console.log(playerName + " now has " + playerMoney + " remaining."); 
-    } 
-    //if no, ask question again by running fight()
-    else {fight(); 
-    }
-    window.alert(playerName + " has chosen to skip the fight!")
-} else {
-    window.alert("You need to choose a valid option! Try again!"); 
 }
 }; 
 
 //have to call the function for it to run
-//fight(); 
-
+//fight each enemy robot by looping over them and fighting them one at a time
 for( let i=0; i < enemyNames.length; i++ ){
- fight(enemyNames[i]); 
+    if(playerHealth>0){
+        window.alert('Welcome to Robot Gladiators! Round ' + (i+1)); 
+
+//pick new enemy to fight based off the index of the enemyNames array 
+        let pickedEnemyName = enemyNames[i]; 
+        enemyHealth = 50; 
+        //pass pickedEnemyName variable value into the fight function where it will assume the value of the enemyName parameter
+        fight(pickedEnemyName); 
+} else {
+    //if player isn't alive, stop the game
+    window.alert('You have lost your robot in battle! Game over!'); 
+    break; 
+}
 }
